@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row">
         <div class="col-md-8">
-            <h1>Change menu</h1>
+            <h1>{{ title }}</h1>
             <form method="POST" class="menu-form">
                 {% csrf_token %}
                 {{ form.as_p }}
