@@ -1,21 +1,20 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import Http404
-from django.utils import timezone
-from operator import attrgetter
 from datetime import datetime
+from operator import attrgetter
+
 from django.core.exceptions import ObjectDoesNotExist
-from .models import *
+from django.db.models import Q
+from django.http import Http404
+from django.shortcuts import render, get_object_or_404, redirect
+
 from .forms import *
+from .models import *
 
 
 def menu_list(request):
-    all_menus = Menu.objects.all()
-    menus = []
-    for menu in all_menus:
-        if not menu.expiration_date or menu.expiration_date >= timezone.now():
-            menus.append(menu)
+    all_menus = Menu.objects.filter(
+        Q(expiration_date__isnull=True) | Q(expiration_date__gte=timezone.now())).prefetch_related('items')
 
-    menus = sorted(menus, key=attrgetter('created_date'))
+    menus = sorted(all_menus, key=attrgetter('created_date'))
     return render(request, 'menu/list_all_current_menus.html', {'menus': menus})
 
 
