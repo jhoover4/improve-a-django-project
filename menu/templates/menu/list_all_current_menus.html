@@ -1,6 +1,9 @@
 {% extends "layout.html" %}
 
 {% block content %}
+    <div class="page-header">
+        <h1>Menu List</h1>
+    </div>
     <div class="row">
         <div class="col-md-8">
             <div class="post">
@@ -11,13 +14,12 @@
                 {% endif %}
 
                 {% for menu in menus %}
-                    <h1>
-                        {% if user.is_authenticated %}
-                            <a class="btn btn-default" href="{% url 'menu_edit' pk=menu.pk %}"><span
-                                    class="glyphicon glyphicon-pencil"></span></a>
-                        {% endif %}
+                    <h3>
                         <a href="{% url 'menu_detail' pk=menu.pk %}">{{ menu.season }}</a>
-                    </h1>
+                        {% if user.is_authenticated %}
+                            <a class="btn btn-link" href="{% url 'menu_edit' pk=menu.pk %}">Edit</a>
+                        {% endif %}
+                    </h3>
                     <p>{{ menu.items.all|join:", " }}</p>
                 {% endfor %}
             </div>
