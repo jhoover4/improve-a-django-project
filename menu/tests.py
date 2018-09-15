@@ -38,7 +38,7 @@ class MenuTestCase(TestCase):
 
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(list(menus), list(resp.context['menus']))
-        self.assertTemplateUsed(resp, 'menu/list_all_current_menus.html')
+        self.assertTemplateUsed(resp, 'menu/menu_list.html')
 
     def test_create_menu_view(self):
         resp = self.client.get(reverse('menu_create'))
@@ -87,7 +87,7 @@ class ItemTestCase(TestCase):
 
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(self.test_item, resp.context['item'])
-        self.assertTemplateUsed(resp, 'menu/detail_item.html')
+        self.assertTemplateUsed(resp, 'menu/item_detail.html')
 
 
 class IngredientTestCase(TestCase):

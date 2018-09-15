@@ -15,7 +15,7 @@ def menu_list(request):
         Q(expiration_date__isnull=True) | Q(expiration_date__gte=timezone.now())).prefetch_related('items')
 
     menus = sorted(all_menus, key=attrgetter('created_date'))
-    return render(request, 'menu/list_all_current_menus.html', {'menus': menus})
+    return render(request, 'menu/menu_list.html', {'menus': menus})
 
 
 def menu_detail(request, pk):
@@ -25,7 +25,7 @@ def menu_detail(request, pk):
 
 def item_detail(request, pk):
     item = get_object_or_404(Item, pk=pk)
-    return render(request, 'menu/detail_item.html', {'item': item})
+    return render(request, 'menu/item_detail.html', {'item': item})
 
 
 @login_required
@@ -51,6 +51,12 @@ def create_edit_menu(request, pk=None):
             menu = None
         form = MenuForm(instance=menu)
     return render(request, 'menu/menu_edit.html', {'form': form, 'title': title})
+
+
+def item_list(request):
+    all_items = Item.objects.all()
+    items = sorted(all_items, key=attrgetter('created_date'))
+    return render(request, 'menu/item_list.html', {'items': items})
 
 
 @login_required

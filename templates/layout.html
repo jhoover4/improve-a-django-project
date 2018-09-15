@@ -2,6 +2,10 @@
 <head>
     <title>Soda Fountain</title>
     <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootswatch/4.1.3/minty/bootstrap.min.css">
+    {% load static from staticfiles %}
+    {% block static %}
+        <link href="{% static 'images/soda.png' %}" rel='icon' type='image/png'>
+    {% endblock static %}
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -12,12 +16,20 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="/" class="top-menu">View Menus</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'item_list' %}" class="top-menu">View Items</a>
+            </li>
+        </ul>
+        {% if user.is_authenticated %}
+            <ul class="navbar-nav ml-auto mr-5">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'menu_create' %}" class="top-menu">Add Menu</a>
                 </li>
-            {% endif %}
-        </ul>
+            </ul>
+        {% endif %}
     </div>
 </nav>
 <div class="content container mt-5">
