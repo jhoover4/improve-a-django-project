@@ -32,23 +32,20 @@ def item_detail(request, pk):
 def create_edit_menu(request, pk=None):
     if pk:
         title = 'Change Menu'
+        menu = get_object_or_404(Menu, pk=pk)
     else:
+        menu = None
         title = 'Add Menu'
 
     if request.method == 'POST':
-        form = MenuForm(request.POST)
+        form = MenuForm(request.POST, instance=menu)
         if form.is_valid():
             menu = form.save(commit=False)
-            menu.created_date = timezone.now()
             menu.save()
             form.save_m2m()
 
             return redirect('menu_detail', pk=menu.pk)
     else:
-        try:
-            menu = Menu.objects.get(pk=pk)
-        except Menu.DoesNotExist:
-            menu = None
         form = MenuForm(instance=menu)
     return render(request, 'menu/menu_edit.html', {'form': form, 'title': title})
 
@@ -62,23 +59,20 @@ def item_list(request):
 @login_required
 def create_edit_item(request, pk=None):
     if pk:
+        item = get_object_or_404(Item, pk=pk)
         title = 'Update Item'
     else:
+        item = None
         title = 'Add Item'
 
     if request.method == 'POST':
-        form = ItemForm(request.POST)
+        form = ItemForm(request.POST, instance=item)
         if form.is_valid():
             item = form.save(commit=False)
-            item.created_date = timezone.now()
             item.save()
-            item.save_m2m()
+            form.save_m2m()
 
             return redirect('item_detail', pk=item.pk)
     else:
-        try:
-            item = Item.objects.get(pk=pk)
-        except Item.DoesNotExist:
-            item = None
         form = ItemForm(instance=item)
     return render(request, 'menu/item_edit.html', {'form': form, 'title': title})

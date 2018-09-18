@@ -3,24 +3,25 @@
 {% block content %}
     <div class="row">
         <div class="col-md-8">
-            <div class="post">
+            <p class="post">
                 <h1>
                     {{ menu.season.strip }}
                     {% if user.is_authenticated %}
                         <a class="btn btn-link" href="{% url 'menu_edit' pk=menu.pk %}">Edit</a>
                     {% endif %}
                 </h1>
+                {% if menu.expiration_date %}
+                    <p class="lead">
+                        Menu expires on {{ menu.expiration_date|date:"F j, Y" }}
+                    </p>
+                {% endif %}
                 <h2>On the menu this season:</h2>
                 <div class="list-group">
                     {% for item in menu.items.all %}
-                    <a href="{% url 'item_detail' pk=item.pk %}" class="list-group-item list-group-item-action">{{ item }}</a>
-                    {%  endfor %}
+                        <a href="{% url 'item_detail' pk=item.pk %}"
+                           class="list-group-item list-group-item-action">{{ item }}</a>
+                    {% endfor %}
                 </div>
-                {% if menu.expiration_date %}
-                    <div class="date">
-                        Menu expires on {{ menu.expiration_date|date:"F j, Y" }}
-                    </div>
-                {% endif %}
             </div>
         </div>
     </div>
