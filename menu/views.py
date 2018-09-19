@@ -11,6 +11,8 @@ from .models import Menu, Item
 
 
 def menu_list(request):
+    """Index which shows all menus that are not expired, ordered by created date."""
+
     all_menus = Menu.objects.filter(
         Q(expiration_date__isnull=True) | Q(expiration_date__gte=timezone.now())).prefetch_related('items')
 
@@ -23,13 +25,10 @@ def menu_detail(request, pk):
     return render(request, 'menu/menu_detail.html', {'menu': menu})
 
 
-def item_detail(request, pk):
-    item = get_object_or_404(Item, pk=pk)
-    return render(request, 'menu/item_detail.html', {'item': item})
-
-
 @login_required
 def create_edit_menu(request, pk=None):
+    """View for both adding menus and editing existing menus."""
+
     if pk:
         title = 'Change Menu'
         menu = get_object_or_404(Menu, pk=pk)
@@ -54,6 +53,13 @@ def item_list(request):
     all_items = Item.objects.all()
     items = sorted(all_items, key=attrgetter('created_date'))
     return render(request, 'menu/item_list.html', {'items': items})
+
+
+def item_detail(request, pk):
+    """View for both adding items and editing existing items."""
+
+    item = get_object_or_404(Item, pk=pk)
+    return render(request, 'menu/item_detail.html', {'item': item})
 
 
 @login_required

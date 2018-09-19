@@ -18,7 +18,7 @@ class MenuTestCase(TestCase):
     def test_menus_created_date(self):
         date_string = '%m/%d/%Y'
         test_date = datetime.datetime.strftime(self.test_menu.created_date, date_string)
-        today_date = datetime.datetime.strftime(datetime.datetime.today(), date_string)
+        today_date = datetime.datetime.strftime(timezone.now(), date_string)
 
         self.assertEqual(test_date, today_date)
 
